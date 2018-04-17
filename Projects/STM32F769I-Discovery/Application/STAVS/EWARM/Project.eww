@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\Project.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>BuildAll</name>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_BSP_CLYN</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_BSP_LWIP</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_BSP_LWIP_TRACEANALYSER</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_AFE_CYLN</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_AFE_LWIP</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_AFE_CYLN_DELIVERY</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_AFE_LWIP_DELIVERY</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_BSP_CYLN_DELIVERY</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_BSP_LWIP_DELIVERY</configuration>
+      </member>
+      <member>
+        <project>Project</project>
+        <configuration>STAVS_AFE_CYLN_TRACEANALYSER</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+

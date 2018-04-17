@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<Package DBVersion="2.0">
+ <PackDescription Release="X-CUBE-STAVS-1.0.X">
+  <Note  Release="ReleaseNotes.html"/>
+ </PackDescription>
+</Package>
+

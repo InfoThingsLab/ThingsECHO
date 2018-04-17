@@ -1,0 +1,92 @@
+/*###ICF### Section handled by ICF editor, don't touch! ****/
+/*-Editor annotation file-*/
+/* IcfEditorFile="$TOOLKIT_DIR$\config\ide\IcfEditor\cortex_v1_0.xml" */
+/*-Specials-*/
+define symbol __ICFEDIT_intvec_start__ = 0x08000000;
+/*-Memory Regions-*/
+
+/* ROM : [0x08000000,0x081FFFFF] : 2048 KBytes                        */
+/*       [0x08000000,0x080001FF] : 512 Bytes     : Interrrupt vectors */
+/*       [0x08000200,0x081DFFFF] : 1919.5 KBytes : Code               */
+/*       [0x081E0000,0x081FFFFF] : 128 KBytes    : Persistent storage */
+
+define symbol __ICFEDIT_region_ROM_start__          = 0x08000200;
+define symbol __ICFEDIT_region_ROM_end__            = 0x081DFFFF;
+
+/* STAVS Reserved  Ram : [0x20000000,0x20044FFF] : 275K 128K DTCM + 147K PRAM   */
+
+define symbol __ICFEDIT_region_STAVS_start__         = 0x20000000;
+define symbol __ICFEDIT_region_STAVS_end__           = 0x20044FFF;
+
+define symbol __ICFEDIT_region_RAM_start__          = 0x20045000;
+define symbol __ICFEDIT_region_RAM_end__            = 0x2007BFFF;
+
+/* SRAM2 : [0x2007C000, 0x2007FFFF] : 16 KBytes                                    */
+/*         [0x2007C000,0x2007C1FF]  : 512 Bytes     : Ethernet dma descripteurs    */
+/*         [0x2007C200,0x2007FFFF]  : 15.5 KBytes   : Ethernet Buffers             */
+
+define symbol __ICFEDIT_region_RAM_NO_CACHE_start__ 	   = 0x2007C000;
+define symbol __ICFEDIT_region_RAM_NO_CACHE_end__   	   = 0x2007FFFF;
+define symbol __ICFEDIT_region_RAM_NO_CACHE_DEVICE_start__ = 0x2007C000;
+define symbol __ICFEDIT_region_RAM_NO_CACHE_DEVICE_end__   = 0x2007C1FF;
+define symbol __ICFEDIT_region_RAM_NO_CACHE_NORMAL_start__ = 0x2007C200;
+define symbol __ICFEDIT_region_RAM_NO_CACHE_NORMAL_end__   = 0x2007FFFF;
+
+/* SDRAM : [0xC0400000, 0xC07FFFFF] : 4MBytes                                     */
+define symbol __ICFEDIT_region_SDRAM_start__        	   = 0xC0400000;
+define symbol __ICFEDIT_region_SDRAM_end__          	   = 0xC07FFFFF;
+
+
+/*-Sizes-*/
+define symbol __ICFEDIT_size_cstack__ = 0x6000;
+define symbol __ICFEDIT_size_heap__   = 0x100000;
+/**** End of ICF editor section. ###ICF###*/
+
+define memory mem with size  = 4G;
+
+// notice we have locked the last rom block  to preserve  persistant storage
+
+define region ROM_region          				= mem:[from __ICFEDIT_region_ROM_start__          to __ICFEDIT_region_ROM_end__];
+define region RAM_region          				= mem:[from __ICFEDIT_region_RAM_start__          to __ICFEDIT_region_RAM_end__];
+
+define region RAM_NO_CACHE_DEVICE_region 		= mem:[from __ICFEDIT_region_RAM_NO_CACHE_DEVICE_start__ to __ICFEDIT_region_RAM_NO_CACHE_DEVICE_end__];
+define region RAM_NO_CACHE_NORMAL_region 		= mem:[from __ICFEDIT_region_RAM_NO_CACHE_NORMAL_start__ to __ICFEDIT_region_RAM_NO_CACHE_NORMAL_end__];
+
+define region RAM_NO_CACHE_region 				= mem:[from __ICFEDIT_region_RAM_NO_CACHE_start__ to __ICFEDIT_region_RAM_NO_CACHE_end__];
+define region SDRAM_region        				= mem:[from __ICFEDIT_region_SDRAM_start__        to __ICFEDIT_region_SDRAM_end__];
+define region STAVS_region         				= mem:[from __ICFEDIT_region_STAVS_start__         to __ICFEDIT_region_STAVS_end__];
+
+
+
+define block CSTACK with alignment = 8, size 	= __ICFEDIT_size_cstack__   { };
+define block HEAP   with alignment = 8, size 	= __ICFEDIT_size_heap__     { };
+
+initialize by copy 								{ readwrite };
+do not initialize  								{ section .noinit };
+
+place at address mem:__ICFEDIT_intvec_start__ 	{ readonly section .intvec };
+place in ROM_region 							{ readonly };
+place in RAM_region 							{ readwrite, block CSTACK};
+place in RAM_NO_CACHE_DEVICE_region 			{ section .sram2_non_cached_device };
+place in RAM_NO_CACHE_NORMAL_region 			{ section .sram2_non_cached_normal };
+place in RAM_NO_CACHE_region 					{ section .ram_no_cache };
+
+place in STAVS_region  							{ section .stavs };
+place in SDRAM_region 							{ block HEAP };
+
+
+
+/* QSPI  : [0x90000000, 0x00002000] : 8 KBytes      : Asset Headers             */
+/* QSPI  : [0x90002000, 0x9FFFFFFF] : 255.99 MBytes : Asset Files               */
+
+define symbol __region_QSPIH_start__ 		= 0x90000000;
+define symbol __region_QSPIH_end__   		= 0x90001FFF;
+define symbol __region_QSPIF_start__ 		= 0x90002000;
+define symbol __region_QSPIF_end__   		= 0x9FFFFFFF;
+
+define region QSPIH_region              	= mem:[from __region_QSPIH_start__ to __region_QSPIH_end__];
+define region QSPIF_region              	= mem:[from __region_QSPIF_start__ to __region_QSPIF_end__];
+
+place in QSPIF_region                   	{ section ExtQSPIFlashSection };
+place in QSPIH_region                   	{ section ExtQSPIFlashHeader };
+

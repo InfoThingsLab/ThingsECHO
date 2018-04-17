@@ -1,0 +1,6 @@
+/*
+  This header is used to build various Build profiles using a single IAR configuration in release mode
+  The result will be created in the delivery folder
+  It is a fallback  header producing the default delivery
+  The real header will take  place in the tool folder and  created dynamicaly by a batch file
+*/
