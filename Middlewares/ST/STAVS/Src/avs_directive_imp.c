@@ -218,6 +218,15 @@ static AVS_Result avs_directive_process_standard(AVS_instance_handle *pHandle, j
 
     return avs_core_message_send(pHandle, EVT_DIRECTIVE_ALERT, AVS_EVT_PARAM(root));
   }
+
+  if(strcmp(pNameSpace, "TemplateRuntime") == 0)
+  {
+    if(strcmp(pName, "RenderTemplate") == 0)
+    {
+      avs_core_message_send(pHandle, EVT_DIRECTIVE_CARD, AVS_EVT_PARAM(root));
+    }
+  }
+
   return AVS_OK;
 }
 
